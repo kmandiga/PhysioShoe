@@ -262,7 +262,7 @@ void setup()
 {
   Wire.begin(18,19);
   //  TWBR = 12;  // 400 kbit/sec I2C speed
-  Serial.begin(38400);
+  Serial.begin(9600);
 
   // Set up the interrupt pin, its set as active high, push-pull
   pinMode(intPin, INPUT);
@@ -273,45 +273,45 @@ void setup()
 
   // Read the WHO_AM_I register, this is a good test of communication
   byte c = readByte(0x68, WHO_AM_I_MPU9250);  // Read WHO_AM_I register for MPU-9250
-  Serial.print("MPU9250 "); Serial.print("I AM "); Serial.print(c, HEX); Serial.print(" I should be "); Serial.println(0x73, HEX);
+  //Serial.print("MPU9250 "); Serial.print("I AM "); Serial.print(c, HEX); Serial.print(" I should be "); Serial.println(0x73, HEX);
 
   if (c == 0x73) // WHO_AM_I should always be 0x68
   {
-    Serial.println("MPU9250 is online...");
+    //Serial.println("MPU9250 is online...");
 
     MPU9250SelfTest(SelfTest); // Start by performing self test and reporting values
-    Serial.print("x-axis self test: acceleration trim within : "); Serial.print(SelfTest[0], 1); Serial.println("% of factory value");
-    Serial.print("y-axis self test: acceleration trim within : "); Serial.print(SelfTest[1], 1); Serial.println("% of factory value");
-    Serial.print("z-axis self test: acceleration trim within : "); Serial.print(SelfTest[2], 1); Serial.println("% of factory value");
-    Serial.print("x-axis self test: gyration trim within : "); Serial.print(SelfTest[3], 1); Serial.println("% of factory value");
-    Serial.print("y-axis self test: gyration trim within : "); Serial.print(SelfTest[4], 1); Serial.println("% of factory value");
-    Serial.print("z-axis self test: gyration trim within : "); Serial.print(SelfTest[5], 1); Serial.println("% of factory value");
+//    Serial.print("x-axis self test: acceleration trim within : "); Serial.print(SelfTest[0], 1); Serial.println("% of factory value");
+//    Serial.print("y-axis self test: acceleration trim within : "); Serial.print(SelfTest[1], 1); Serial.println("% of factory value");
+//    Serial.print("z-axis self test: acceleration trim within : "); Serial.print(SelfTest[2], 1); Serial.println("% of factory value");
+//    Serial.print("x-axis self test: gyration trim within : "); Serial.print(SelfTest[3], 1); Serial.println("% of factory value");
+//    Serial.print("y-axis self test: gyration trim within : "); Serial.print(SelfTest[4], 1); Serial.println("% of factory value");
+//    Serial.print("z-axis self test: gyration trim within : "); Serial.print(SelfTest[5], 1); Serial.println("% of factory value");
 
     calibrateMPU9250(gyroBias, accelBias); // Calibrate gyro and accelerometers, load biases in bias registers
 
 
     initMPU9250();
-    Serial.println("MPU9250 initialized for active data mode...."); // Initialize device for active mode read of acclerometer, gyroscope, and temperature
+    //Serial.println("MPU9250 initialized for active data mode...."); // Initialize device for active mode read of acclerometer, gyroscope, and temperature
 
     // Read the WHO_AM_I register of the magnetometer, this is a good test of communication
     byte d = readByte(AK8963_ADDRESS, AK8963_WHO_AM_I);  // Read WHO_AM_I register for AK8963
-    Serial.print("AK8963 "); Serial.print("I AM "); Serial.print(d, HEX); Serial.print(" I should be "); Serial.println(0x48, HEX);
+    //Serial.print("AK8963 "); Serial.print("I AM "); Serial.print(d, HEX); Serial.print(" I should be "); Serial.println(0x48, HEX);
 
     // Get magnetometer calibration from AK8963 ROM
-    initAK8963(magCalibration); Serial.println("AK8963 initialized for active data mode...."); // Initialize device for active mode read of magnetometer
+    initAK8963(magCalibration); //Serial.println("AK8963 initialized for active data mode...."); // Initialize device for active mode read of magnetometer
 
     if (SerialDebug) {
       //  Serial.println("Calibration values: ");
-      Serial.print("X-Axis sensitivity adjustment value "); Serial.println(magCalibration[0], 2);
-      Serial.print("Y-Axis sensitivity adjustment value "); Serial.println(magCalibration[1], 2);
-      Serial.print("Z-Axis sensitivity adjustment value "); Serial.println(magCalibration[2], 2);
+//      Serial.print("X-Axis sensitivity adjustment value "); Serial.println(magCalibration[0], 2);
+//      Serial.print("Y-Axis sensitivity adjustment value "); Serial.println(magCalibration[1], 2);
+//      Serial.print("Z-Axis sensitivity adjustment value "); Serial.println(magCalibration[2], 2);
     }
 
   }
   else
   {
-    Serial.print("Could not connect to MPU9250: 0x");
-    Serial.println(c, HEX);
+    //Serial.print("Could not connect to MPU9250: 0x");
+    //Serial.println(c, HEX);
     while (1) ; // Loop forever if communication doesn't happen
   }
 }
@@ -438,14 +438,14 @@ void loop()
       roll  *= 180.0f / PI;
 
       if (SerialDebug) {
-        Serial.print("Yaw, Pitch, Roll: ");
+        //Serial.print("Yaw, Pitch, Roll: ");
         Serial.print(yaw, 2);
-        Serial.print(", ");
+        Serial.print('\t');
         Serial.print(pitch, 2);
-        Serial.print(", ");
+        Serial.print('\t');
         Serial.println(roll, 2);
 
-        Serial.print("rate = "); Serial.print((float)sumCount / sum, 2); Serial.println(" Hz");
+        //Serial.print("rate = "); Serial.print((float)sumCount / sum, 2); Serial.println(" Hz");
       }
 
       // With these settings the filter is updating at a ~145 Hz rate using the Madgwick scheme and
